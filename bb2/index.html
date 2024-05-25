@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Beat Bud 1</title>
+    <!-- BootStrap CSS Link -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    
+    <!-- Navbar component -->
+    <!-- Bind the data (activePage) to the prop (active-page) -->
+    <navbar :pages="pages" 
+    :active-page="activePage"
+    :nav-link-click="(index) => activePage = index"></navbar>
+    <!-- Content Component -->
+    <page-content :page="pages[activePage]"></page-content>
+
+    <!-- Optional JavaScript; choose one of the two! -->
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script> -->
+
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    activePage: 0,
+                    // Remove theme, because it is specific to the navbar component, 
+                    // so we can add theme as a navbar data instead.
+                    // theme: 'light',
+                    pages: [
+                        {
+                            link: {title: 'Home', url: 'index.html'},
+                            pageTitle: 'Home',
+                            content: 'Welcome to the Home page'
+                        },
+                        {
+                            link: {title: 'About', url: 'about.html'},
+                            pageTitle: 'About',
+                            content: 'Welcome to the About page'
+                        },
+                        {
+                            link: {title: 'Account', url: 'account.html'},
+                            pageTitle: 'Account',
+                            content: 'Your Account page'
+                        }
+                    ]
+                };
+            },
+            methods: {
+                // Replace this is the navbar component because that is what it is specific to
+                // changeTheme() {
+                //     this.theme = this.theme === 'light' ? 'dark' : 'light';
+                // }
+            }
+        });
+
+        app.component('page-content', {
+            props: ['page'],
+            template: `
+                <div id="content" class="container">
+                    <h1>{{ page.pageTitle }}</h1>
+                    <p>{{ page.content }}</p>
+                </div>
+            `
+        });
+
+        app.component('navbar', {
+            props: ['pages', 'activePage', 'navLinkClick'],
+            // navLinkClick: function
+            template: `
+                <nav id="nav" 
+                    :class="['navbar', 'navbar-expand-lg', \`navbar-\${theme}\`, \`bg-\${theme}\`]">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" href="#">Navbar</a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li v-for="(page, index) in pages" class="nav-item" :key="index">
+                                    <a class="nav-link" 
+                                    :class="{active: activePage === index}"
+                                    aria-current="page" 
+                                    :href="page.link.url" 
+                                    :title="\`This link goes to the \${page.link.title} page.\`"
+                                    @click.prevent="navLinkClick(index)">
+                                    {{page.link.title}}
+                                    </a>
+                                </li>
+                            </ul>
+                            <form class="d-flex">
+                                <button class="btn btn-primary" @click.prevent="changeTheme">
+                                    <span v-if="theme === 'light'">Dark Mode</span>
+                                    <span v-else>Light Mode</span>
+                                </button>
+                                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                                <button class="btn btn-outline-success" type="submit">Search</button>
+                            </form>
+                        </div>
+                    </div>
+                </nav>
+            `,
+            data() {
+                return {
+                    theme:'light'
+                }
+            },
+            methods: {
+                changeTheme() {
+                    this.theme = this.theme === 'light' ? 'dark' : 'light';
+                }
+            }
+        })
+
+        app.mount('body');
+    </script>
+</body>
+</html>
+
+
+
+
+
+<!-- Step 1:
+We  created a Vue app and passed in data our application is going to use. 
+Mount the application in an element with the ID of content.
+-->
+<!-- Step 2:
+I created another Vue app and mounted that to the nav bar. Then I used the v-for directive to loop through
+links to create and li item for each link in the links array.
+Then I converted the links into an array of objects. And used :key to bind unqiue ID (from index) 
+to each li element to help keep track of them.
+-->
+<!-- Step 3:
+Convert into one Vue application. Combine all the data into one data object. Then mount the app to the 'body' class.
+Convert the data into an array of pages.
+-->
+<!-- Step 4:
+Create a data property called 'activePage' that uses the index to represent the active page, then we can easily 'change pages.'
+Add the @click directive to reassign 'activePage'. @click.prevent will prevent the browser from going to the href. 
+This way we can see all the content without a separate page to direct to.
+-->
+<!-- Step 5: 
+v-bind the class attribute to an object to change styles dynamically. 
+Properties of this object is the CSS classes we wnat to apply to the element.
+ex: :class="{acitve: activePage == index}"
+    - Property: css class, 'active', we want to apply to the element.
+    - activePage == index - conditional statement that will determine if the CSS will be applied.
+ -->
+ <!-- Step 6:
+Created the boolean data useDarkNavbar. Then binded the light/dark nav bar classes based on if useDarkNavbar is T/F.
+Then created a button that lets us toggle between the two: '@click.prevent="useDarkNavBar = !useDarkNavBar"'
+
+We can change this class binding just to :class="navBarClasses"
+and then create a computed property where we can define navBarClasses
+
+We can also bind CSS classes with an array
+  -->
+<!-- Step 7:
+Create a new data property called theme, then we will no longer need our computed property of navBarClasses.
+Add a method called 'changeTheme'
+-->
+<!-- Step 8:
+Create a component for our 'content' section
+1. create a variable for our Vue application before we mount it.
+    - let app = Vue.createApp(...)
+    -- Create component:
+            app.component('string-name'), { -options- }
+    - app.mount(...)
+2. Input page element as if it is a html element
+    - a component has props that we can pass data to    
+-->
