@@ -1,0 +1,38 @@
+{
+    "id": "b6e5a0d1-4bf1-4b9b-9cbb-adef7345d632",
+    "title": "Sorting Algorithm Challenge",
+    "description": "Sort an array of integers using a sorting algorithm of your choice.",
+    "difficulty": "intermediate",
+    "expectedOutput": [1, 2, 3, 4, 5],
+    "algorithmType": "sorting",
+    "hints": [
+      "Consider the time complexity of different sorting algorithms.",
+      "Try using bubble sort or merge sort."
+    ],
+    "testCases": [
+      {
+        "input": [5, 3, 1, 2, 4],
+        "expectedOutput": [1, 2, 3, 4, 5]
+      },
+      {
+        "input": [10, 2, 8, 6, 4],
+        "expectedOutput": [2, 4, 6, 8, 10]
+      }
+    ],
+    "codeBlocks": [
+      {
+        "blockType": "loop",
+        "blockValue": "for loop"
+      },
+      {
+        "blockType": "condition",
+        "blockValue": "if statement"
+      }
+    ],
+    "availableScales": [
+      ["C", "D", "E", "F", "G"],
+      ["A", "B", "C#", "D", "E"]
+    ],
+    "createdAt": "2024-09-18T14:30:00.000Z"
+  }
+  
